@@ -1,14 +1,19 @@
 package com.nprogramming.weather.resources
 
 import com.google.common.base.Optional
+import com.nprogramming.weather.WeatherData
 import com.nprogramming.weather.WeatherResource
+import com.nprogramming.weather.data.WeatherRepository
 import spock.lang.Specification
 
 class WeatherResourceTest extends Specification {
 
+    def repository = Mock(WeatherRepository)
+    
     def "should return temperature for Cracow"() {
         given: "instance of resource created"
-        def resource = new WeatherResource("Cracow");
+        repository.queryByCityName("Cracow") >> new WeatherData("Cracow", 12.1)
+        def resource = new WeatherResource("Cracow", repository);
 
         expect: "it returns the proper message"
         resource.getWeather(Optional.absent()) &&

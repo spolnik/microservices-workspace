@@ -36,6 +36,7 @@ dependencies {
     compile (
             'io.dropwizard:dropwizard-core:' + dropwizardVersion,
             'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-client:' + dropwizardVersion,
     )
 }
 
@@ -57,4 +58,4 @@ test {
     }
 }
 
-defaultTasks 'oneJar', 'run'
+defaultTasks 'oneJar'

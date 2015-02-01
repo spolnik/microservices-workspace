@@ -1,9 +1,14 @@
 package com.nprogramming.weather;
 
+import com.nprogramming.weather.data.OpenWeatherMapRepository;
+import com.nprogramming.weather.data.WeatherRepository;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+
+import javax.ws.rs.client.Client;
 
 public class WeatherSearchApplication extends Application<WeatherSearchConfiguration> {
 
@@ -18,14 +23,24 @@ public class WeatherSearchApplication extends Application<WeatherSearchConfigura
 
     @Override
     public void run(
-            WeatherSearchConfiguration configuration,
+            WeatherSearchConfiguration config,
             Environment environment) throws Exception {
+
+        final Client client = new JerseyClientBuilder(environment)
+                .using(config.getJerseyClientConfiguration())
+                .build(getName());
+        
+        final WeatherRepository repository = new OpenWeatherMapRepository(
+                config, client
+        );
         
         final WeatherResource resource = new WeatherResource(
-                configuration.getDefaultCity()
+                config.getDefaultCity(),
+                repository
         );
+        
         final CityHealthCheck healthCheck = new CityHealthCheck(
-            configuration.getDefaultCity()
+            config.getDefaultCity()
         );
         
         environment.healthChecks().register("city", healthCheck);

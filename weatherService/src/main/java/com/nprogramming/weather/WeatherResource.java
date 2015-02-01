@@ -2,35 +2,37 @@ package com.nprogramming.weather;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
+import com.nprogramming.weather.data.WeatherRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.Random;
-
-import static com.nprogramming.weather.utils.TemperatureHelper.scaleTemperature;
 
 @Path("/weather")
 @Produces(MediaType.APPLICATION_JSON)
 public class WeatherResource {
 
     private final String defaultCity;
-    
-    private Random temperatureGenerator = new Random();
+    private final WeatherRepository repository;
 
-    public WeatherResource(String defaultCity) {
+    public WeatherResource(String defaultCity, WeatherRepository repository) {
         this.defaultCity = defaultCity;
+        this.repository = repository;
     }
 
     @GET
     @Timed
-    public WeatherSearchResponse getWeather(@QueryParam("city") Optional<String> city) {
+    public WeatherData getWeather(@QueryParam("city") Optional<String> city) {
 
-        return new WeatherSearchResponse(
-                city.or(defaultCity),
-                scaleTemperature(temperatureGenerator.nextDouble() * 30.0)
-        );
+        try {
+            return repository.queryByCityName(city.or(defaultCity));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new WeatherData("Error: " + e.getMessage(), 0.0);
+        }
     }
 }
