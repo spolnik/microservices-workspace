@@ -5,7 +5,7 @@ apply plugin: 'application'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-mainClassName = 'com.nprogramming.weather.WeatherService'
+mainClassName = 'com.nprogramming.weather.WeatherSearchApplication'
 
 buildscript {
     repositories {
@@ -26,7 +26,10 @@ repositories {
 }
 
 dependencies {
-    compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
+    compile (
+            'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
+    )
 
     testCompile 'junit:junit:4.12'
 }
@@ -36,15 +39,17 @@ task oneJar(type: OneJar) {
 }
 
 run {
-    args 'server', './src/main/resources/weather.yml'
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
+    args 'server'
 }
 
 artifacts {
     oneJar
 }
 
-defaultTasks 'oneJar'
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+defaultTasks 'oneJar', 'run'

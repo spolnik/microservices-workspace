@@ -8,6 +8,6 @@ public final class TemperatureHelper {
 
         return new BigDecimal(value)
                 .setScale(2, BigDecimal.ROUND_HALF_EVEN)
-                .doubleValue();
+                .intValue();
     }
 }

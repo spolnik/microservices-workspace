@@ -26,9 +26,9 @@ public class WeatherResource {
 
     @GET
     @Timed
-    public WeatherResponse checkWeather(@QueryParam("city") Optional<String> city) {
+    public WeatherSearchResponse checkWeather(@QueryParam("city") Optional<String> city) {
 
-        return new WeatherResponse(
+        return new WeatherSearchResponse(
                 city.or(defaultCity),
                 scaleTemperature(temperatureGenerator.nextDouble() * 30.0)
         );
