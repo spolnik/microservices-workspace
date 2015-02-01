@@ -26,7 +26,7 @@ public class WeatherResource {
 
     @GET
     @Timed
-    public WeatherSearchResponse checkWeather(@QueryParam("city") Optional<String> city) {
+    public WeatherSearchResponse getWeather(@QueryParam("city") Optional<String> city) {
 
         return new WeatherSearchResponse(
                 city.or(defaultCity),
