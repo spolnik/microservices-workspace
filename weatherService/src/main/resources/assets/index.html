@@ -26,7 +26,6 @@
                    cache: false,
                    success: function (data) {
 
-                        $("#city").text(data.city);
                         $("#country").text(data.country);
                         $("#temperature").text(data.temperature + '°C');
                         $("#humidity").text(data.humidity + '%');
@@ -132,7 +131,6 @@
             </div>
             <div class="panel-body">
                 <ul class="list-group">
-                    <li class="list-group-item">City: <span id="city" class="badge">-</span></li>
                     <li class="list-group-item">Country: <span id="country" class="badge">-</span></li>
                     <li class="list-group-item">Temperature: <span id="temperature" class="badge">-</span></li>
                     <li class="list-group-item">Humidity: <span id="humidity" class="badge">-</span></li>
