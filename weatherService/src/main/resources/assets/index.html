@@ -10,51 +10,141 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <script type='text/javascript'
             src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script>
         $(document).ready(function(){
 
-            $("#getWeather").click(function(){
+            ///////////////
+            /// Weather ///
+            ///////////////
+
+            var updateWeather = function (cityText) {
                 $.ajax({
                    url: "/weather",
-                   data: {city: $('#city').val()},
+                   data: {city: cityText},
                    dataType: 'json',
                    cache: false,
                    success: function (data) {
 
-                       $("#cityText").html(data.city + ': ' + data.temperature + '°C');
-                       $("#cityText").css('color', 'black');
-                       $("#content").show();
+                        $("#city").text(data.city);
+                        $("#country").text(data.country);
+                        $("#temperature").text(data.temperature + '°C');
+                        $("#humidity").text(data.humidity);
+                        $("#pressure").text(data.pressure);
+                        $("#windspeed").text(data.windSpeed);
+
+                        var gMap = new google.maps.Map(document.getElementById('map-canvas'));
+                        gMap.setZoom(12);
+                        gMap.setCenter(
+                            new google.maps.LatLng(
+                                data.geometry.latitude,
+                                data.geometry.longitude
+                            )
+                        );
                    }
                });
+            }
+
+            $("#cityText").keypress(function(e) {
+                if (e.which == 13) {
+                    updateWeather($('#cityText').val());
+                }
             });
+
+            $("#search").click(function() {
+                updateWeather($('#cityText').val());
+            });
+
+            ///////////////////
+            /// Google maps ///
+            ///////////////////
+
+            var krakow = new google.maps.LatLng(
+                50.060943,
+                19.945338
+            );
+
+            var map;
+
+            function initialize() {
+                var mapOptions = {
+                    zoom: 12,
+                    center: krakow
+                };
+
+                map = new google.maps.Map(
+                    document.getElementById('map-canvas'),
+                    mapOptions
+                );
+            }
+
+            google.maps.event.addDomListener(
+                window,
+                'load',
+                initialize
+            );
+
+            updateWeather('Kraków');
         });
     </script>
+    <style>
+        #map-canvas {
+            height: 300px;
+            margin: 0px;
+            padding: 0px
+        }
+        .row {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="jumbotron">
-        <img src="/app/weather-icon.png" width="20%" height="20%"
+        <img src="/app/weather-icon.png" width="15%" height="15%"
              align="right"/>
 
         <h1>Weather Search</h1>
 
-        <p>Service displays weather connected with given city name.</p>
+        <p>Service displays weather for given city name.</p>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="input-group add-on">
+                <input id="cityText" type="search" class="form-control"
+                       placeholder="City ...">
+                <div class="input-group-btn">
+                    <button id="search" class="btn btn-info" type="button">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-6 text-center">
+            <div id="map-canvas"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Weather Details</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">City: <span id="city" class="badge">-</span></li>
+                        <li class="list-group-item">Country: <span id="country" class="badge">-</span></li>
+                        <li class="list-group-item">Temperature: <span id="temperature" class="badge">-</span></li>
+                        <li class="list-group-item">Humidity: <span id="humidity" class="badge">-</span></li>
+                        <li class="list-group-item">Pressure: <span id="pressure" class="badge">-</span></li>
+                        <li class="list-group-item">Wind Speed: <span id="windspeed" class="badge">-</span></li>
+                    </ul>
+                </div>
+            </div>            
+        </div>
+    </div>
+    
 
-        <div class="col-lg-6 input-group">
-            <input id="city" type="text" class="form-control"
-                   placeholder="Search for city ...">
-            <span class="input-group-btn">
-                <button id="getWeather" class="btn btn-info" type="button">
-                    Search
-                </button>
-            </span>
-        </div>
-    </div>
-    <div id="content" class="container" hidden="hidden">
-        <div id="cityText" style="color: gray; font-size: 30px">No information
-            yet...
-        </div>
-    </div>
 </div>
 </body>
 </html>

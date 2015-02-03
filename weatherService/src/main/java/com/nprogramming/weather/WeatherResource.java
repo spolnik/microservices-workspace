@@ -3,6 +3,7 @@ package com.nprogramming.weather;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.nprogramming.weather.data.WeatherRepository;
+import com.nprogramming.weather.domain.WeatherData;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,7 +32,7 @@ public class WeatherResource {
             return repository.queryByCityName(city.or(defaultCity));
         } catch (IOException e) {
             e.printStackTrace();
-            return new WeatherData("Error: " + e.getMessage(), 0.0);
+            return new WeatherData();
         }
     }
 }

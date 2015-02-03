@@ -2,7 +2,8 @@ package com.nprogramming.weather.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nprogramming.weather.WeatherData;
+import com.nprogramming.weather.domain.Geometry;
+import com.nprogramming.weather.domain.WeatherData;
 import com.nprogramming.weather.WeatherSearchConfiguration;
 
 import javax.ws.rs.client.Client;
@@ -57,11 +58,27 @@ public class OpenWeatherMapRepository implements WeatherRepository {
         JsonNode weatherDataJson = mapper.readTree(responseAsJson);
         
         String city = weatherDataJson.get("name").asText();
-        double temperature = weatherDataJson.get("main").get("temp").asDouble();
+        String country = weatherDataJson.get("sys").get("country").asText();
 
+        JsonNode main = weatherDataJson.get("main");
+        double temperature = main.get("temp").asDouble();
+        double pressure = main.get("pressure").asDouble();
+        int humidity = main.get("humidity").asInt();
+        
+        int windSpeed = weatherDataJson.get("wind").get("speed").intValue();
+        
+        JsonNode coordinates = weatherDataJson.get("coord");
+        double longitude = coordinates.get("lon").asDouble();
+        double latitude = coordinates.get("lat").asDouble();
+        
         return new WeatherData(
                 city,
-                kelvinToCelsius(temperature)
+                country,
+                kelvinToCelsius(temperature),
+                pressure,
+                humidity,
+                windSpeed,
+                new Geometry(longitude, latitude)
         );
     }
 }

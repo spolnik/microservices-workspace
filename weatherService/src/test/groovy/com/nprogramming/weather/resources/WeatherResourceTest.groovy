@@ -1,7 +1,7 @@
 package com.nprogramming.weather.resources
 
 import com.google.common.base.Optional
-import com.nprogramming.weather.WeatherData
+import com.nprogramming.weather.domain.WeatherData
 import com.nprogramming.weather.WeatherResource
 import com.nprogramming.weather.data.WeatherRepository
 import spock.lang.Specification

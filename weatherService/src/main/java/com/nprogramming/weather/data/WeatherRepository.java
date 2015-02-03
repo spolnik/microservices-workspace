@@ -1,6 +1,6 @@
 package com.nprogramming.weather.data;
 
-import com.nprogramming.weather.WeatherData;
+import com.nprogramming.weather.domain.WeatherData;
 
 import java.io.IOException;
 
