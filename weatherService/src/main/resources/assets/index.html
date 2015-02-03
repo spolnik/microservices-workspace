@@ -29,9 +29,9 @@
                         $("#city").text(data.city);
                         $("#country").text(data.country);
                         $("#temperature").text(data.temperature + '°C');
-                        $("#humidity").text(data.humidity);
-                        $("#pressure").text(data.pressure);
-                        $("#windspeed").text(data.windSpeed);
+                        $("#humidity").text(data.humidity + '%');
+                        $("#pressure").text(data.pressure + 'hPa');
+                        $("#windspeed").text(data.windSpeed + 'mps');
 
                         var gMap = new google.maps.Map(document.getElementById('map-canvas'));
                         gMap.setZoom(12);
@@ -93,7 +93,7 @@
             margin: 0px;
             padding: 0px
         }
-        .row {
+        .block {
             margin-bottom: 20px;
         }
     </style>
@@ -108,42 +108,40 @@
 
         <p>Service displays weather for given city name.</p>
     </div>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="input-group add-on">
-                <input id="cityText" type="search" class="form-control"
-                       placeholder="City ...">
-                <div class="input-group-btn">
-                    <button id="search" class="btn btn-info" type="button">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
+
+    <div class="col-md-6 col-md-offset-3 block">
+        <div class="input-group input-group-lg add-on">
+            <input id="cityText" type="search" class="form-control"
+                   placeholder="City ...">
+            <div class="input-group-btn">
+                <button id="search" class="btn btn-info" type="button">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-md-6 text-center">
-            <div id="map-canvas"></div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Weather Details</h3>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        <li class="list-group-item">City: <span id="city" class="badge">-</span></li>
-                        <li class="list-group-item">Country: <span id="country" class="badge">-</span></li>
-                        <li class="list-group-item">Temperature: <span id="temperature" class="badge">-</span></li>
-                        <li class="list-group-item">Humidity: <span id="humidity" class="badge">-</span></li>
-                        <li class="list-group-item">Pressure: <span id="pressure" class="badge">-</span></li>
-                        <li class="list-group-item">Wind Speed: <span id="windspeed" class="badge">-</span></li>
-                    </ul>
-                </div>
-            </div>            
+
+
+    <div class="col-xs-12 col-md-6 block">
+        <div id="map-canvas"></div>
+    </div>
+    <div class="col-xs-12 col-md-6 block">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Weather Details</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item">City: <span id="city" class="badge">-</span></li>
+                    <li class="list-group-item">Country: <span id="country" class="badge">-</span></li>
+                    <li class="list-group-item">Temperature: <span id="temperature" class="badge">-</span></li>
+                    <li class="list-group-item">Humidity: <span id="humidity" class="badge">-</span></li>
+                    <li class="list-group-item">Pressure: <span id="pressure" class="badge">-</span></li>
+                    <li class="list-group-item">Wind Speed: <span id="windspeed" class="badge">-</span></li>
+                </ul>
+            </div>
         </div>
     </div>
-    
 
 </div>
 </body>
